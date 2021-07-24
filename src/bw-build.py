@@ -1,7 +1,10 @@
 import sys
 
+debug = False
+
 def main(infile, outfile, f, compression) :
-    print(infile, outfile, f, compression)
+    if debug == True :
+        print(infile, outfile, f, compression)
     return 1
 
 
