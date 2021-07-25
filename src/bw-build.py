@@ -34,67 +34,116 @@ def main(infile, outfile, f) :
     # ajout $ au début de la sequence
     originalSequence = "$" + originalSequence
 
-    if compression == False :
 
-        # read sequence form file (line 2 to end)
-        # add $ at start
-        arrayRes = []
+    # read sequence form file (line 2 to end)
+    # add $ at start
+    arrayRes = []
 
-        sequence = originalSequence
-        for j in originalSequence : 
-            arrayRes.append(sequence)
-            sequence = sequence[-1] + sequence
-            sequence = sequence[:-1]
+    sequence = originalSequence
+    for j in originalSequence : 
+        arrayRes.append(sequence)
+        sequence = sequence[-1] + sequence
+        sequence = sequence[:-1]
         
-        # verif matrice carré 
-        np.size(arrayRes) == len(originalSequence)
-        if np.size(arrayRes) != len(originalSequence) :
-            raise Exception("ERROR : la matrice n'est pas carrée")
+    # verif matrice carré 
+    np.size(arrayRes) == len(originalSequence)
+    if np.size(arrayRes) != len(originalSequence) :
+        raise Exception("ERROR : la matrice n'est pas carrée")
 
-        # tableau 2D avec index
-        index = 1
-        for j in range(len(arrayRes)) :
-            arrayRes[j] = (arrayRes[j], index)
-            index += 1
+    # tableau 2D avec index
+    index = 1
+    for j in range(len(arrayRes)) :
+        arrayRes[j] = (arrayRes[j], index)
+        index += 1
 
-        # tri par ordre croissant
-        arrayRes.sort()
+    # tri par ordre croissant
+    arrayRes.sort()
 
-        # ligne 2 : indexes i1, i2, ...
-        indexArray = []
-        for i in arrayRes :
-            indexArray.append(len(originalSequence) - i[1])
-        indexArray = indexArray[::f]
+    # ligne 2 : indexes i1, i2, ...
+    indexArray = []
+    for i in arrayRes :
+        indexArray.append(len(originalSequence) - i[1])
+    indexArray = indexArray[::f]
 
-        # ligne 3 : sequence avec $
-        res = ""
-        for index_, line in enumerate(arrayRes) :
-            res += line[0][-1]
-        
+    # ligne 3 : sequence avec $
+    res = ""
+    for index_, line in enumerate(arrayRes) :
+        res += line[0][-1]
+
+    indexes = ""
+    i = 0
+    for elt in indexArray :
+        if i != 0 :
+            indexes += ','
+        i += 1
+        indexes += str(elt)
+    indexes += "\n"
+
+    if compression == False :   
         # TEMPORARY PRINT, NEED TO WRITE IN FILE
         header = "0 0 0 " + str(f)
-
-        indexes = ""
-        i = 0
-        for elt in indexArray :
-            if i != 0 :
-                indexes += ','
-            i += 1
-            indexes += str(elt)
-        
         #write in file outfile
         outfile = open(outfile, 'w')
-        outfile.writelines(header)
-        outfile.writelines("\n")
-        outfile.writelines(indexes)
-        outfile.writelines("\n")
+        outfile.write(header)
+        outfile.write("\n")
+        outfile.write(indexes)
         outfile.writelines(res)
-        outfile.close()
+
 
     if compression == True :
-        print("WARNING : il faut implémenter la compression")
+        # adaptation pour compression
+        # suppression du & de la string
+        res = res.split('$')
+        sepPos = len(res[0])
+        res = res[0] + res[1]
+        addedA = 0
 
+        while len(res) % 4 != 0 :
+            res += "A"
+            addedA += 1
+            if addedA >= 4 :
+                # error case
+                raise Exception("ERROR : too much added A, error in sequence string")
+        
+        # temporary print ---> move to file
+        # WARN : cast text to hexa numbers
+        header = "1 " + str(sepPos) + " " + str(addedA) + " " + str(f) + "\n"
 
+        # CAST
+        binRes = []
+        for value in res :
+            if value == 'A' :
+                binRes.append('00')
+            elif value == 'C' :
+                binRes.append('01')
+            elif value == 'G' :
+                binRes.append('10')
+            elif value == 'T' :
+                binRes.append('11')
+        
+        res = ""
+        for value in binRes :
+            res += value[::-1]
+
+        j = 0
+        binRes = []
+        while j <= len(res) - 8 :
+            value = res[j:j+8]
+            binRes.append(int(value[::-1], 2))
+            j += 8
+
+        print(binRes)
+        outfile = open(outfile, 'wb')
+        outfile.write(header.encode())
+        outfile.write(indexes.encode())
+        count = 0
+        #for j in binRes :
+        #    res = j.to_bytes(1, "big")
+        #    outfile.write(res)
+        outfile.write(bytes(binRes))
+        outfile.close()
+
+# ----------- MAIN FUNCTION ----------- 
 if __name__ == "__main__" :
     compression = False
     argv = sys.argv
