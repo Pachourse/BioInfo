@@ -1,6 +1,7 @@
 import sys
 import os
 import numpy as np
+import struct
 
 debug = False
 
@@ -8,24 +9,74 @@ debug = False
 #global params
 countOnly = False
 
+def clearBinaryString(string) :
+    string = str(string)
+    if string[:2] == "b\'" and string[-1] == "\'":
+        string = string[2:-1]
+    return string
+
 def main(infile, q) :
     index = 0
     totalCount = 0
+    compressed = False
     #readFile
-    infile = open(infile, "r")
-    infos = []
-    for line in infile:
-        line = line.rstrip()
-        infos.append([line])
-    infile.close
 
-    header = infos[0]
-    indexes = np.fromstring(infos[1][0], dtype=int, sep=',')
-    sequence = infos[2][0]
-    sequence = [sequence[j] for j in range(len(sequence))]
-    header = np.fromstring(header[0], dtype=int, sep=' ')
+    #check if compression
+    
+    if (infile.split('.')[-1] == 'idxc') :
+        compressed = True
+        #remplacer par flag header[0] ?
+
+    if compressed == True : 
+        infile = open(infile, "rb")
+        infos = []
+        for line in infile:
+            line = line.rstrip()
+            infos.append([line])
+        infile.close
+
+        header = clearBinaryString(infos[0][0])
+        header = np.fromstring(header, dtype=int, sep=' ')
+        indexes = clearBinaryString(infos[1][0])
+        indexes = np.fromstring(indexes, dtype=int, sep=',')
+        sequence = [s for s in line]
+        res = []
+        for seq in sequence :
+            #if seq[:2] == "0b" : 
+            seq = bin(int(seq))[2:].zfill(8)[::-1]
+            for j in range(len(seq)) :
+                if j%2 == 0 :
+                    value = "" + seq[j+1] + seq[j]
+                    if value == "00" :
+                        res.append('A')
+                    elif value == "01" :
+                        res.append('C')
+                    elif value == "10" :
+                        res.append('G')
+                    elif value == "11" :
+                        res.append('T')
+        sequence = res[:header[1]]
+        sequence += ['$']
+        sequence += res[header[1]::]
+        if header[2] != 0 :
+            sequence = sequence[:-(header[2])]
+
+    else : 
+        infile = open(infile, "r")
+        infos = []
+        for line in infile:
+            line = line.rstrip()
+            infos.append([line])
+        infile.close
+
+        header = infos[0]
+        indexes = np.fromstring(infos[1][0], dtype=int, sep=',')
+        sequence = infos[2][0]
+        sequence = [sequence[j] for j in range(len(sequence))]
+        header = np.fromstring(header[0], dtype=int, sep=' ')
+    
     f = header[-1]
-    # #decodage_sequence
+
     subsequence = sequence.copy()
 
     for i in range(len(sequence) - 1) :
@@ -35,7 +86,7 @@ def main(infile, q) :
 
     sequence = []
     for i in range(len(subsequence)) :
-        if i%6 == 0 :
+        if i%f == 0 :
             index = indexes[0]
             indexes = indexes[1::]
         else :
