@@ -19,8 +19,8 @@ def createLineSimple(fastaFile, f, compress=False) :
         os.system("python3 tests/check_compressed_sequence.py ../data/" + fastaFile + ".idxc > res1.txt")
         os.system("python3 tests/check_compressed_sequence.py test" + fastaFile + ".idxc > res2.txt")
         res = os.system("diff res1.txt res2.txt")
-        #os.system("rm res1.txt")
-        #os.system("rm res2.txt")
+        os.system("rm res1.txt")
+        os.system("rm res2.txt")
         os.system("rm test" + fastaFile + ".idxc")
         if res == 0 :
             return True
