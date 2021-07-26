@@ -32,9 +32,7 @@ def main(infile, q) :
         subsequence.sort()
         for i in range(len(subsequence)) :
             subsequence[i] = sequence[i] + subsequence[i]
-    
-    # REVOIR DEPUIS ICI --------------------------------------------------------------------------------------------------------------
-    #subsequence.sort()
+
     sequence = []
     for i in range(len(subsequence)) :
         if i%6 == 0 :
