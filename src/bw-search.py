@@ -20,35 +20,48 @@ def main(infile, q) :
     infile.close
 
     header = infos[0]
-    indexes = infos[1]
+    indexes = np.fromstring(infos[1][0], dtype=int, sep=',')
     sequence = infos[2][0]
     sequence = [sequence[j] for j in range(len(sequence))]
+    header = np.fromstring(header[0], dtype=int, sep=' ')
+    f = header[-1]
     # #decodage_sequence
     subsequence = sequence.copy()
-    for i in range(len(sequence)) :
-        subsequence = subsequence.copy()
+
+    for i in range(len(sequence) - 1) :
         subsequence.sort()
         for i in range(len(subsequence)) :
             subsequence[i] = sequence[i] + subsequence[i]
-    subsequence.sort()
-    sequence = subsequence[0]
-    #sequence = [sequence[j] for j in range(len(sequence))]
+    
+    # REVOIR DEPUIS ICI --------------------------------------------------------------------------------------------------------------
+    #subsequence.sort()
+    sequence = []
+    for i in range(len(subsequence)) :
+        if i%6 == 0 :
+            index = indexes[0]
+            indexes = indexes[1::]
+        else :
+            index = len(subsequence) - len(subsequence[i].split("$")[0])
+        sequence.append([subsequence[i], index])
 
+    indexes = [seq[1] for seq in sequence]
+    res = []
+    sequence.sort()
+    sequence = sequence[0][0]
     for j in range(len(sequence)) :
         if sequence[:len(q)] == q :
             if countOnly == False :
-                print(len(sequence) - j - 1)
+                res.append((len(sequence) - j - 1))
             else :
                 totalCount += 1
         sequence = sequence[-1] + sequence[:-1]
-    
-    if countOnly == True and totalCount != 0 :
+
+    if countOnly == True :
         print(totalCount)
-    # #print(sequence)
-
-
-    #a = infile.readlines(1)
-    #print(a)
+    else :
+        for elt in indexes :
+            if elt in res :
+                print(elt)
 
 # ----------- MAIN FUNCTION ----------- 
 if __name__ == "__main__" :
