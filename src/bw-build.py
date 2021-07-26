@@ -15,8 +15,8 @@ def main(infile, outfile, f) :
         print(infile, outfile, f)
     # si compression : Faux -> c=0, n=0, p=0
     # exemples : 
-    #   .idxc -> compressé
-    #   .idx -> non compressé
+    #   .idxc -> compresse
+    #   .idx -> non compresse
 
     #lecture du fichier d'input
     infile = open(infile, "r")
@@ -31,7 +31,7 @@ def main(infile, outfile, f) :
             line = line.rstrip()
             originalSequence += line
 
-    # ajout $ au début de la sequence
+    # ajout $ au debut de la sequence
     originalSequence = "$" + originalSequence
 
 
@@ -45,10 +45,10 @@ def main(infile, outfile, f) :
         sequence = sequence[-1] + sequence
         sequence = sequence[:-1]
         
-    # verif matrice carré 
+    # verif matrice carre 
     np.size(arrayRes) == len(originalSequence)
     if np.size(arrayRes) != len(originalSequence) :
-        raise Exception("ERROR : la matrice n'est pas carrée")
+        raise Exception("ERROR : la matrice n'est pas carree")
 
     # tableau 2D avec index
     index = 1
