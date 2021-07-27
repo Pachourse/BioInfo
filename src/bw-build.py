@@ -32,8 +32,7 @@ def main(infile, outfile, f) :
             originalSequence += line
 
     # ajout $ au debut de la sequence
-    #originalSequence = "$" + originalSequence
-    originalSequence = originalSequence + "$"
+    originalSequence = "$" + originalSequence
 
 
     # read sequence form file (line 2 to end)
@@ -52,7 +51,7 @@ def main(infile, outfile, f) :
         raise Exception("ERROR : la matrice n'est pas carree")
 
     # tableau 2D avec index
-    index = 0
+    index = 1
     for j in range(len(arrayRes)) :
         arrayRes[j] = (arrayRes[j], index)
         index += 1
