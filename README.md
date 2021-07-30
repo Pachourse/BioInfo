@@ -58,7 +58,14 @@ Il est possible de créer un environnement virtuel de travail dans la racine du 
 
 Un dossier `/tests` contient une test suit qui génère et execute une commande permettant d'executer le programme `bw-build` et `bw-search` les différents fichiers de data. 
 
-Les tests sont executables dans le dissier `tests/` avec la présence du dossier `data/` en amont du projet. Ces paramètres sont modifiables ne haut du projet. 
+Les tests sont executables dans le dissier racine du projet avec la présence du dossier `data/` en amont de ce dernier. Ces paramètres sont modifiables ne haut du projet. 
+
+Execution : 
+
+```
+python3 tests/tests.py
+./tests/tests.py
+```
 
 ## Travail effectué
 
