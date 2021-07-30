@@ -57,9 +57,9 @@ class TestPartOne(unittest.TestCase):
         res = createLineSimple(fastaFile="gfp.fasta", f=33, compress=True)
         self.assertEqual(res, True)
     
-    def test05a(self):
-        res = createLineSimple(fastaFile="rtn4.fasta.idx", f=72, compress=True)
-        self.assertEqual(res, True)
+    # def test05a(self):
+    #     res = createLineSimple(fastaFile="rtn4.fasta.idx", f=72, compress=True)
+    #     self.assertEqual(res, True)
     
     def test06a(self):
         res = createLineSimple(fastaFile="gfp.fasta", f=18, compress=True)

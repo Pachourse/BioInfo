@@ -1,7 +1,5 @@
 import sys
-import os
 import numpy as np
-import struct
 
 debug = False
 
