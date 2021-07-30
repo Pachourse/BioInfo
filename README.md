@@ -32,9 +32,25 @@ Le projet suit l’architecture exigée par les consignes mais rajoute deux part
 
 ### Requirements
 
+Pour le fonctionnement de `bw-build.py` et `bw-search.py` :
+
 ```txt
-AJOUTER ICI REQUIREMENTS
+numpy==1.21.1
 ```
+
+Supplémentaires : 
+
+- Les tests unitaires utilisent `os` `subprocess` et `unittest`
+
+### Execution
+
+Il est possible d’executer les fichiers python avec `./bw-build.py` et `./bw-search.py`, ils ont les droits d’execution (`chmod -x`) et le shebang généraliste : `#!/usr/bin/env python3`
+
+Il est possible de créer un environnement virtuel de travail dans la racine du projet : 
+
+- création de l’environnement : `python3 -m venv env` 
+- activetion de l’environnement : `source env/bin/activate` 
+- installetion des ressources `pip install -r requirements.txt`. 
 
 ### Autres ressources supplémentaires
 
@@ -171,3 +187,20 @@ La partie 3 ne fut pas réalisée. Un début de piste fut débuté avec l’impl
 
 La première méthode du 1 n’est pas suffisante pour rempalcer cette troisième partie, `zsh` kill le processus avant sa réalisation `rtn4.fasta`. 
 
+---
+
+Applications utilisées pour la réalisation du projet : 
+
+- JupyterNotebook pour les essais
+- VSCode pour l’IDE
+- Typora pour l’éditition en Markdown du Readme
+- Monodraw pour les schémas au format texte
+
+Environnement de test :
+
+- macOS 12.0
+- Ubuntu 18
+
+
+
+Le projet est diponible sur GitHub en repo privé : https://github.com/Pachourse/BioInfo un accès vous sera accordé par demande par mail. 
