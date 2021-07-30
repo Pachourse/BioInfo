@@ -19,15 +19,15 @@ Le projet suit l’architecture exigée par les consignes mais rajoute deux part
 .
 ├── AUTHORS
 ├── README.md
+├── requirements.txt
 ├── src
 │   ├── bw-build.py
 │   └── bw-search.py
-├── test.cmv.fasta.idx
 └── tests
-    ├── brouillon.ipynb
     ├── check_compressed_sequence.py
     ├── method2.py
     └── tests.py
+../data/ <- only for tests
 ```
 
 ### Requirements
