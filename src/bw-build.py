@@ -133,7 +133,6 @@ def main(infile, outfile, f) :
             binRes.append(int(value[::-1], 2))
             j += 8
 
-        print(binRes)
         outfile = open(outfile, 'wb')
         outfile.write(header.encode())
         outfile.write(indexes.encode())
