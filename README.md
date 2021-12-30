@@ -211,7 +211,3 @@ Environnement de test :
 - macOS 12.0
 - Ubuntu 18
 
-
-
-Le projet est diponible sur GitHub en repo privé : https://github.com/Pachourse/BioInfo un accès vous sera accordé par demande par mail. 
-
